@@ -88,3 +88,21 @@ public class BinarySearchTree {
 		System.out.print(node.data + " ");
 	}
 }
+
+/*OUTPUT
+
+  10
+ /
+5
+
+  5
+ /
+4
+
+10
+ \
+  15
+
+InOrder Traversal : 4 5 10 15 
+PreOrder Traversal : 10 5 4 15 
+PostOrder Traversal : 4 5 15 10 */
