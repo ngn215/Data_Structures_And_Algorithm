@@ -63,6 +63,15 @@ public class LinkedList {
 		System.out.println("");
 		System.out.println("=== Printing linked list (iterative) ===");
 		ll.printLinkedList(head);
+		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("=== Reversing linked list (recursive) ===");
+		head = ll.reverseLinkedListRecursively(head);
+		
+		System.out.println("");
+		System.out.println("=== Printing linked list (iterative) ===");
+		ll.printLinkedList(head);
 	}
 	
 	//Building singly linked list. returns head node.
@@ -160,6 +169,27 @@ public class LinkedList {
 		return prev; //return the new head node
 	}
 	
+	//reverses linked list and returns new head node (recursive method)
+	public Node performReverseLinkedListRecursively(Node prev, Node curr)
+	{
+		if (curr == null)
+			return prev;
+		else
+		{
+			Node next = curr.next; //backing up next node
+			curr.next = prev; //setting previous node as next node of current node
+			
+			return performReverseLinkedListRecursively(curr, next);
+		}
+		
+	}
+	
+	//driver for recursive reverse function
+	public Node reverseLinkedListRecursively(Node head)
+	{
+		return performReverseLinkedListRecursively(null, head);
+	}
+	
 	//prints entire linked list (iterative method)
 	public void printLinkedList(Node head)
 	{
@@ -219,5 +249,10 @@ Node not present in linked list
 
 === Printing linked list (iterative) ===
 12 18 25 11 20 15 4 5 10 
+
+=== Reversing linked list (recursive) ===
+
+=== Printing linked list (iterative) ===
+10 5 4 15 20 11 25 18 12 
 
  */
