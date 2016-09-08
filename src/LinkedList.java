@@ -275,7 +275,8 @@ public class LinkedList {
 /*
 OUTPUT
 
-10 5 4 15 20 11 25 18 12 
+Linked list nodes : 10 5 4 15 20 11 25 18 12 
+Doubly Linked list nodes : 1 2 3 4 5 6 7 8 9 
 
 === Constructing linked list ===
 
@@ -286,14 +287,12 @@ OUTPUT
 10 5 4 15 20 11 25 18 12 
 
 === Constructing Doubly linked list ===
-
-=== Printing doubly linked list ===
-10 5 4 15 20 11 25 18 12 
+1 2 3 4 5 6 7 8 9 
 
 === Finding Node : 12 in linked list ===
 Node : 12 found
 
-=== Finding Node : 25 (recursively) in linked list ===
+=== Finding Node : 12 (recursively) in linked list ===
 Node : 12 found
 
 === Finding Node : 7 in linked list ===
@@ -303,13 +302,15 @@ Node not present in linked list
 Node not present in linked list
 
 === Reversing linked list ===
-
-=== Printing linked list (iterative) ===
 12 18 25 11 20 15 4 5 10 
 
 === Reversing linked list (recursive) ===
-
-=== Printing linked list (iterative) ===
 10 5 4 15 20 11 25 18 12 
+
+=== Reversing Doubly linked list (iterative) ===
+9 8 7 6 5 4 3 2 1 
+
+=== Reversing Doubly linked list (recursive) ===
+1 2 3 4 5 6 7 8 9 
 
  */
