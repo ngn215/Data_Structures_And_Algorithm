@@ -14,7 +14,7 @@ public class BinarySearchTree {
 		int[] nodesList = {10, 5, 4, 15, 20, 11, 25, 18, 12, 7}; //list of nodes to be inserted to build the tree
 		Node root = null; //initializing root
 		
-		System.out.println("Constructing tree");
+		System.out.println("=== Constructing tree ===");
 		
 		for (int i=0; i<nodesList.length; i++)
 		{
@@ -44,17 +44,22 @@ public class BinarySearchTree {
 		System.out.print("BFS : ");
 		bst.BFS(root);
 		
+		System.out.println("");
+		System.out.println("----------------------------------");
+		
 		int leftMostNodeDistance = bst.calculateLeftMostNodeDistance(root, 0);
 		bst.assignDistanceFromLeft(root, leftMostNodeDistance, 0, 0, "root");
 		
-		System.out.println("");
 		System.out.println("");
 		System.out.println("=== Print Node distances and levels : ===");
 		bst.printNodeDistancesBST(root);
 		
 		System.out.println("");
-		System.out.println("Print BST Structure : ");
+		System.out.println("=== Print BST Structure : ===");
 		bst.printBSTStructure(root);
+		
+		System.out.println("");
+		System.out.print("=== SEARCH ===");
 		
 		Node searchNode = null;
 		for (int i=0; i<nodesList.length; i++)
@@ -68,26 +73,26 @@ public class BinarySearchTree {
 				System.out.print("found !!");
 		}
 		
-//		System.out.println("");
-//		System.out.println("----------------------------------");
-//		
-//		int[] nodesDeleteList = {15, 18, 25, 20, 12}; //list of nodes to be deleted to build the tree
-//		
-//		for (int i=0; i<nodesDeleteList.length; i++)
-//		{
-//			System.out.println("");
-//			System.out.println("==== Delete node : " + nodesDeleteList[i] + " ====");
-//			bst.deleteNodeFromBST(root, nodesDeleteList[i]);
-//			
-//			System.out.println("");
-//			System.out.print("InOrder Traversal : ");
-//			bst.printInOrderBST(root);
-//			System.out.println("");
-//		}
+		System.out.println("");
+		System.out.println("----------------------------------");
+		System.out.println("");
+		
+		int[] nodesDeleteList = {15, 18, 25, 20, 12}; //list of nodes to be deleted to build the tree
+		
+		System.out.print("=== DELETE ===");
+		for (int i=0; i<nodesDeleteList.length; i++)
+		{
+			System.out.println("");
+			System.out.print("Delete node : " + nodesDeleteList[i] + " | ");
+			bst.deleteNodeFromBST(root, nodesDeleteList[i]);
+			bst.printInOrderBST(root);
+		}
 		
 		System.out.println("");
 		System.out.println("----------------------------------");
 		
+		System.out.println("");
+		System.out.print("=== SEARCH after DELETE ===");
 		searchNode = null;
 		for (int i=0; i<nodesList.length; i++)
 		{
@@ -441,7 +446,7 @@ public class BinarySearchTree {
 }
 
 /*OUTPUT
-Constructing tree
+=== Constructing tree ===
    10
   /
 5
@@ -482,6 +487,9 @@ Constructing tree
 InOrder Traversal : 4 5 7 10 11 12 15 18 20 25 
 PreOrder Traversal : 10 5 4 7 15 11 12 20 18 25 
 PostOrder Traversal : 4 7 5 12 11 18 25 20 15 10 
+DFS : 10 5 4 7 15 11 12 20 18 25 
+BFS : 10 5 15 4 7 11 20 12 18 25 
+----------------------------------
 
 === Print Node distances and levels : ===
 Node : 4, DistanceFromLeft : 0, Level : 2
@@ -495,7 +503,7 @@ Node : 18, DistanceFromLeft : 3, Level : 3
 Node : 20, DistanceFromLeft : 4, Level : 2
 Node : 25, DistanceFromLeft : 5, Level : 3
 
-Print BST Structure : 
+=== Print BST Structure : ===
 
   10
  /  \
@@ -505,26 +513,36 @@ Print BST Structure :
    \ /  \
    12 18  25
 
+=== SEARCH ===
+Searching Node : 10 ...found !!
+Searching Node : 5 ...found !!
+Searching Node : 4 ...found !!
+Searching Node : 15 ...found !!
+Searching Node : 20 ...found !!
+Searching Node : 11 ...found !!
+Searching Node : 25 ...found !!
+Searching Node : 18 ...found !!
+Searching Node : 12 ...found !!
+Searching Node : 7 ...found !!
 ----------------------------------
 
-==== Delete node : 15 ====
+=== DELETE ===
+Delete node : 15 | 4 5 7 10 11 12 18 20 25 
+Delete node : 18 | 4 5 7 10 11 12 20 25 
+Delete node : 25 | 4 5 7 10 11 12 20 
+Delete node : 20 | 4 5 7 10 11 12 
+Delete node : 12 | 4 5 7 10 11 
+----------------------------------
 
-InOrder Traversal : 4 5 7 10 11 12 18 20 25 
-
-==== Delete node : 18 ====
-
-InOrder Traversal : 4 5 7 10 11 12 20 25 
-
-==== Delete node : 25 ====
-
-InOrder Traversal : 4 5 7 10 11 12 20 
-
-==== Delete node : 20 ====
-
-InOrder Traversal : 4 5 7 10 11 12 
-
-==== Delete node : 12 ====
-
-InOrder Traversal : 4 5 7 10 11 
-
+=== SEARCH after DELETE ===
+Searching Node : 10 ...found !!
+Searching Node : 5 ...found !!
+Searching Node : 4 ...found !!
+Searching Node : 15 ...NOT found
+Searching Node : 20 ...NOT found
+Searching Node : 11 ...found !!
+Searching Node : 25 ...NOT found
+Searching Node : 18 ...NOT found
+Searching Node : 12 ...NOT found
+Searching Node : 7 ...found !!
  */
