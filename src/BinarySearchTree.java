@@ -36,6 +36,14 @@ public class BinarySearchTree {
 		System.out.print("PostOrder Traversal : ");
 		bst.printPostOrderBST(root);
 		
+		System.out.println("");
+		System.out.print("DFS : ");
+		bst.DFS(root);
+		
+		System.out.println("");
+		System.out.print("BFS : ");
+		bst.BFS(root);
+		
 		int leftMostNodeDistance = bst.calculateLeftMostNodeDistance(root, 0);
 		bst.assignDistanceFromLeft(root, leftMostNodeDistance, 0, 0, "root");
 		
@@ -48,23 +56,50 @@ public class BinarySearchTree {
 		System.out.println("Print BST Structure : ");
 		bst.printBSTStructure(root);
 		
+		Node searchNode = null;
+		for (int i=0; i<nodesList.length; i++)
+		{
+			System.out.println("");
+			System.out.print("Searching Node : " + nodesList[i] + " ...");
+			searchNode = bst.searchNodeInBST(root, nodesList[i]);
+			if (searchNode == null)
+				System.out.print("NOT found");
+			else
+				System.out.print("found !!");
+		}
+		
+//		System.out.println("");
+//		System.out.println("----------------------------------");
+//		
+//		int[] nodesDeleteList = {15, 18, 25, 20, 12}; //list of nodes to be deleted to build the tree
+//		
+//		for (int i=0; i<nodesDeleteList.length; i++)
+//		{
+//			System.out.println("");
+//			System.out.println("==== Delete node : " + nodesDeleteList[i] + " ====");
+//			bst.deleteNodeFromBST(root, nodesDeleteList[i]);
+//			
+//			System.out.println("");
+//			System.out.print("InOrder Traversal : ");
+//			bst.printInOrderBST(root);
+//			System.out.println("");
+//		}
 		
 		System.out.println("");
 		System.out.println("----------------------------------");
 		
-		int[] nodesDeleteList = {15, 18, 25, 20, 12}; //list of nodes to be deleted to build the tree
-		
-		for (int i=0; i<nodesDeleteList.length; i++)
+		searchNode = null;
+		for (int i=0; i<nodesList.length; i++)
 		{
 			System.out.println("");
-			System.out.println("==== Delete node : " + nodesDeleteList[i] + " ====");
-			bst.deleteNodeFromBST(root, nodesDeleteList[i]);
-			
-			System.out.println("");
-			System.out.print("InOrder Traversal : ");
-			bst.printInOrderBST(root);
-			System.out.println("");
+			System.out.print("Searching Node : " + nodesList[i] + " ...");
+			searchNode = bst.searchNodeInBST(root, nodesList[i]);
+			if (searchNode == null)
+				System.out.print("NOT found");
+			else
+				System.out.print("found !!");
 		}
+		
 	}
 
 	public void insertIntoBST(Node root, Node node)
@@ -102,6 +137,98 @@ public class BinarySearchTree {
 			
 	}
 	
+	public Node deleteNodeFromBST(Node root, int data)
+	{		
+		if (showSteps)
+			System.out.println("** deleteNodeFromBST(root: " + root.data + ", data: " + data + ")");
+		
+		if(data < root.data)
+		{
+			if (root.left != null)
+			{
+				if (showSteps)
+					System.out.println("<-- " + root.data);
+				
+				root.left = deleteNodeFromBST(root.left, data);
+			}
+			else
+			{
+				System.out.println("Node with value : " + data + " is not present in the tree");
+			}
+		}
+		else if (data > root.data)
+		{
+			if (root.right != null)
+			{
+				if (showSteps)
+					System.out.println(root.data + " -->");
+				
+				root.right = deleteNodeFromBST(root.right, data);
+			}
+			else
+			{
+				System.out.println("Node with value : " + data + " is not present in the tree");
+			}
+		}
+		else //node is found and we need to delete it
+		{
+			if (showSteps)
+				System.out.println("Deleting Node : " + root.data);
+			
+			//node has both left and right children
+			if(root.left != null && root.right != null)
+			{				
+				//get max node from left subtree
+				int maxnodedata = getMinNode(root.right);
+				if (showSteps)
+					System.out.println("Min node of right subtree : " + maxnodedata);
+				
+				root.data = maxnodedata;
+				root.right = deleteNodeFromBST(root.right, maxnodedata);
+				
+			}
+			//node has either left or right children or none
+			else
+			{
+				//if left subtree exists then return left subtree
+				if (root.left != null)
+				{
+					return root.left;
+				}
+				//return right subtree
+				else
+				{
+					return root.right;
+				}
+			}
+
+		}
+		
+		return root;
+	}
+	
+	public Node searchNodeInBST(Node root, int data)
+	{	
+		
+		//System.out.println(root.data);
+		
+		Node temp = null;
+		
+		if(root.data == data)
+			return root;
+		
+		if (root.left != null)
+			temp = searchNodeInBST(root.left, data);
+		
+		if (temp == null && root.right != null)
+			temp = searchNodeInBST(root.right, data);
+		
+		if (temp != null)
+			return temp;
+		else
+			return null;
+	}
+	
 	public void printInOrderBST(Node node)
 	{
 		if (node == null)
@@ -130,6 +257,59 @@ public class BinarySearchTree {
 		printPostOrderBST(node.left);
 		printPostOrderBST(node.right);
 		System.out.print(node.data + " ");
+	}
+	
+	public int getMinNode(Node root)
+	{
+		if (root.left != null)
+		{
+			return getMinNode(root.left);
+		}
+		
+		return root.data;
+	}
+	
+	public void assignDistanceFromLeft(Node node, int distanceFromLeft, int distanceFromCenter, int level, String rootOrleftOrRight)
+	{
+		if (node == null)
+			return;
+		
+		if(rootOrleftOrRight.equals("root"))
+			node.root = true;
+		else if(rootOrleftOrRight.equals("left"))
+			node.leftOfParent = true;
+		else if(rootOrleftOrRight.equals("right"))
+			node.leftOfParent = false;
+		
+		assignDistanceFromLeft(node.left, distanceFromLeft - 1, distanceFromCenter - 1, level + 1, "left");
+		
+		node.distanceFromLeft = distanceFromLeft;
+		//node.distanceFromCenter = distanceFromCenter;
+		node.level = level;
+		//System.out.println("Node : " + node.data + ", Distance : " + node.distanceFromLeft);
+		
+		assignDistanceFromLeft(node.right, distanceFromLeft + 1, distanceFromCenter + 1, level + 1, "right");
+	}
+	
+	public void printNodeDistancesBST(Node node)
+	{
+		if (node == null)
+			return;
+		
+		printNodeDistancesBST(node.left);
+		System.out.println("Node : " + node.data 
+							+ ", DistanceFromLeft : " + node.distanceFromLeft 
+							//+ ", DistanceFromCenter : " + node.distanceFromCenter
+							+ ", Level : " + node.level);
+		printNodeDistancesBST(node.right);
+	}
+	
+	public int calculateLeftMostNodeDistance(Node root, int distance)
+	{
+		if(root.left != null)
+			return calculateLeftMostNodeDistance(root.left, distance + 1);
+		
+		return distance;
 	}
 	
 	public void printBSTStructure(Node root)
@@ -225,128 +405,38 @@ public class BinarySearchTree {
 		System.out.println(connectorString);
 		System.out.println(nodesString);
 	}
-	
-	public void assignDistanceFromLeft(Node node, int distanceFromLeft, int distanceFromCenter, int level, String rootOrleftOrRight)
-	{
-		if (node == null)
-			return;
-		
-		if(rootOrleftOrRight.equals("root"))
-			node.root = true;
-		else if(rootOrleftOrRight.equals("left"))
-			node.leftOfParent = true;
-		else if(rootOrleftOrRight.equals("right"))
-			node.leftOfParent = false;
-		
-		assignDistanceFromLeft(node.left, distanceFromLeft - 1, distanceFromCenter - 1, level + 1, "left");
-		
-		node.distanceFromLeft = distanceFromLeft;
-		//node.distanceFromCenter = distanceFromCenter;
-		node.level = level;
-		//System.out.println("Node : " + node.data + ", Distance : " + node.distanceFromLeft);
-		
-		assignDistanceFromLeft(node.right, distanceFromLeft + 1, distanceFromCenter + 1, level + 1, "right");
-	}
-	
-	public void printNodeDistancesBST(Node node)
-	{
-		if (node == null)
-			return;
-		
-		printNodeDistancesBST(node.left);
-		System.out.println("Node : " + node.data 
-							+ ", DistanceFromLeft : " + node.distanceFromLeft 
-							//+ ", DistanceFromCenter : " + node.distanceFromCenter
-							+ ", Level : " + node.level);
-		printNodeDistancesBST(node.right);
-	}
-	
-	public int calculateLeftMostNodeDistance(Node root, int distance)
-	{
-		if(root.left != null)
-			return calculateLeftMostNodeDistance(root.left, distance + 1);
-		
-		return distance;
-	}
-	
-	public Node deleteNodeFromBST(Node root, int data)
-	{		
-		if (showSteps)
-			System.out.println("** deleteNodeFromBST(root: " + root.data + ", data: " + data + ")");
-		
-		if(data < root.data)
-		{
-			if (root.left != null)
-			{
-				if (showSteps)
-					System.out.println("<-- " + root.data);
-				
-				root.left = deleteNodeFromBST(root.left, data);
-			}
-			else
-			{
-				System.out.println("Node with value : " + data + " is not present in the tree");
-			}
-		}
-		else if (data > root.data)
-		{
-			if (root.right != null)
-			{
-				if (showSteps)
-					System.out.println(root.data + " -->");
-				
-				root.right = deleteNodeFromBST(root.right, data);
-			}
-			else
-			{
-				System.out.println("Node with value : " + data + " is not present in the tree");
-			}
-		}
-		else //node is found and we need to delete it
-		{
-			if (showSteps)
-				System.out.println("Deleting Node : " + root.data);
-			
-			//node has both left and right children
-			if(root.left != null && root.right != null)
-			{				
-				//get max node from left subtree
-				int maxnodedata = getMinNode(root.right);
-				if (showSteps)
-					System.out.println("Min node of right subtree : " + maxnodedata);
-				
-				root.data = maxnodedata;
-				root.right = deleteNodeFromBST(root.right, maxnodedata);
-				
-			}
-			//node has either left or right children or none
-			else
-			{
-				//if left subtree exists then return left subtree
-				if (root.left != null)
-				{
-					return root.left;
-				}
-				//return right subtree
-				else
-				{
-					return root.right;
-				}
-			}
 
-		}
+	public void DFS(Node root)
+	{
+		//same as preorder traversal
 		
-		return root;
+		if(root == null)
+			return;
+		
+		System.out.print(root.data + " ");
+		DFS(root.left);
+		DFS(root.right);
 	}
 	
-	public int getMinNode(Node root)
+	public void BFS(Node root)
 	{
-		if (root.left != null)
-		{
-			return getMinNode(root.left);
-		}
+		if (root == null)
+			return;
 		
-		return root.data;
+		Queue<Node> q = new LinkedList<Node>();
+		q.add(root);
+		
+		while(!q.isEmpty())
+		{
+			Node temp = q.remove();
+			System.out.print(temp.data + " ");
+			
+			if(temp.left != null)
+				q.add(temp.left);
+			
+			if(temp.right != null)
+				q.add(temp.right);
+		}
 	}
 }
 
