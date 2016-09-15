@@ -1,5 +1,7 @@
+package DataStructuresAndAlgorithms;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Stack;
 
 
 public class BinarySearchTree {
@@ -12,21 +14,17 @@ public class BinarySearchTree {
 		BinarySearchTree bst = new BinarySearchTree();
 		
 		int[] nodesList = {10, 5, 4, 15, 20, 11, 25, 18, 12, 7}; //list of nodes to be inserted to build the tree
-		Node root = null; //initializing root
-		
-		System.out.println("=== Constructing tree ===");
-		
-		for (int i=0; i<nodesList.length; i++)
-		{
-			if (i==0)
-				root = new Node(nodesList[i]); //root node
-			else
-				bst.insertIntoBST(root, new Node(nodesList[i]));
-		}
+		bst.setShowSteps(true);
+		Node root = bst.buildSampleBST(bst, nodesList);
+		bst.setShowSteps(false);
 		
 		System.out.println("----------------------------------");
 		System.out.print("InOrder Traversal : ");
 		bst.printInOrderBST(root);
+		
+		System.out.println("");
+		System.out.print("InOrder Traversal (iterative) : ");
+		bst.inOrderIterative(root);
 		
 		System.out.println("");
 		System.out.print("PreOrder Traversal : ");
@@ -107,6 +105,34 @@ public class BinarySearchTree {
 		
 	}
 
+	public void setShowSteps(boolean showSteps) {
+		this.showSteps = showSteps;
+	}
+	
+	public Node buildSampleBST(BinarySearchTree bst, int[] nodesList)
+	{
+		Node root = null; //initializing root
+		
+		System.out.println("=== Constructing tree ===");
+		
+		for (int i=0; i<nodesList.length; i++)
+		{
+			if (i==0)
+				root = new Node(nodesList[i]); //root node
+			else
+				bst.insertIntoBST(root, new Node(nodesList[i]));
+		}
+		
+		return root;
+	}
+	
+	public Node buildSampleBST(BinarySearchTree bst)
+	{
+		int[] nodesList = {10, 5, 4, 15, 20, 11, 25, 18, 12, 7}; //list of nodes to be inserted to build the tree
+		
+		return buildSampleBST(bst, nodesList);
+	}
+	
 	public void insertIntoBST(Node root, Node node)
 	{
 		if(node.data < root.data)
@@ -115,10 +141,13 @@ public class BinarySearchTree {
 				insertIntoBST(root.left, node);
 			else
 			{
-				System.out.println("   " + root.data);
-				System.out.println("  /");
-				System.out.println(node.data);
-				System.out.println();
+				if (showSteps)
+				{
+					System.out.println("   " + root.data);
+					System.out.println("  /");
+					System.out.println(node.data);
+					System.out.println();
+				}
 				root.left = node;
 			}
 		}
@@ -128,10 +157,13 @@ public class BinarySearchTree {
 				insertIntoBST(root.right, node);
 			else
 			{
-				System.out.println(root.data);
-				System.out.println(" \\");
-				System.out.println("   " + node.data);
-				System.out.println();
+				if (showSteps)
+				{
+					System.out.println(root.data);
+					System.out.println(" \\");
+					System.out.println("   " + node.data);
+					System.out.println();
+				}
 				root.right = node;
 			}
 		}
@@ -442,6 +474,37 @@ public class BinarySearchTree {
 			if(temp.right != null)
 				q.add(temp.right);
 		}
+	}
+
+	//needs to be fixed.
+	public void inOrderIterative(Node root)
+	{
+		if (root==null)
+			return;
+		
+		Stack<Node> s = new Stack<Node>();
+		Node curr = root;
+		s.push(curr);
+		System.out.print(curr.data);
+		
+		while(curr != null)
+		{
+			System.out.print(curr.left.data);
+			s.push(curr.left);
+			curr = curr.left;
+			
+			while(!s.empty() && curr == null)
+			{		
+				curr = s.pop();
+				System.out.print(curr.data + " ");
+				
+				curr = curr.right;
+			}
+			
+			if(s.isEmpty() && curr == null)
+				break;
+		}
+		
 	}
 }
 
