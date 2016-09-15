@@ -24,7 +24,7 @@ public class BinarySearchTree {
 		
 		System.out.println("");
 		System.out.print("InOrder Traversal (iterative) : ");
-		bst.inOrderIterative(root);
+		//bst.inOrderIterative(root);
 		
 		System.out.println("");
 		System.out.print("PreOrder Traversal : ");
